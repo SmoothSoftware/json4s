@@ -1,5 +1,26 @@
 # JSON4S [![Build Status](https://travis-ci.org/json4s/json4s.svg?branch=3.3)](https://travis-ci.org/json4s/json4s)
 
+## About this fork
+
+This fork has started as an attempt to do something completely useless in Scala (sorry Universal Binary JSON).
+This project is basically a Scala wrapper for [Java Universal Binary JSON implementation]
+(https://github.com/thebuzzmedia/universal-binary-json-java.)
+
+### How to build
+
+Since universal-binary-json-java is not published anywhere you need to clone our fork of this and publish it locally
+with gradle:
+
+```bash
+git clone git@github.com:SmoothSoftware/universal-binary-json-java.git
+cd universal-binary-json-java
+gradle publishToMavenLocal
+```
+
+Now you should be able to build this json4s fork with sbt.
+
+# Original documentation of JSON4S
+
 At this moment there are at least 6 json libraries for scala, not counting the java json libraries.
 All these libraries have a very similar AST. This project aims to provide a single AST to be used by other scala
 json libraries.

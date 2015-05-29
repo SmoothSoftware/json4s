@@ -55,7 +55,7 @@ object build extends Build {
     version := "3.3.0-SNAPSHOT",
     javacOptions ++= Seq("-target", "1.6", "-source", "1.6"),
     manifestSetting,
-    resolvers ++= Seq(Opts.resolver.sonatypeSnapshots, Opts.resolver.sonatypeReleases),
+    resolvers ++= Seq(Opts.resolver.sonatypeSnapshots, Opts.resolver.sonatypeReleases, "Local Maven Repository" at "file://"+Path.userHome.absolutePath+"/.m2/repository"),
     crossVersion := CrossVersion.binary
   )
 
@@ -69,7 +69,7 @@ object build extends Build {
     id = "json4s",
     base = file("."),
     settings = json4sSettings ++ noPublish
-  ) aggregate(core, native, json4sExt, jacksonSupport, scalazExt, json4sTests, mongo, ast, scalap, examples, benchmark)
+  ) aggregate(core, native, json4sExt, jacksonSupport, ubjsonSupport, scalazExt, json4sTests, mongo, ast, scalap, examples, benchmark)
 
   lazy val ast = Project(
     id = "json4s-ast",
@@ -124,6 +124,12 @@ object build extends Build {
     settings = json4sSettings ++ Seq(libraryDependencies ++= jackson)
   ) dependsOn(core % "compile;test->test")
 
+  lazy val ubjsonSupport = Project(
+    id = "json4s-ubjson",
+    base = file("ubjson"),
+    settings = json4sSettings ++ Seq(libraryDependencies += ubjson)
+  ) dependsOn(core % "compile;test->test")
+
   lazy val examples = Project(
      id = "json4s-examples",
      base = file("examples"),
@@ -164,7 +170,7 @@ object build extends Build {
           |import reflect._
         """.stripMargin
     )
-  ) dependsOn(core, native, json4sExt, scalazExt, jacksonSupport, mongo)
+  ) dependsOn(core, native, json4sExt, scalazExt, jacksonSupport, ubjsonSupport, mongo)
 
   lazy val benchmark = Project(
     id = "json4s-benchmark",
